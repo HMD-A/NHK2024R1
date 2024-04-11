@@ -1,0 +1,949 @@
+<html lang="ja">
+<meta charset="UTF-8">
+<title>Robo+ism RC23 ER Controller</title>
+
+<head>
+<style>
+  #CTR_Area {
+        position: fixed;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        background-color: #777777;
+    }
+
+    #joy1 {
+        width: 20vw;
+        height: 20vw;
+        /*border: solid 1px black;*/
+        background-color: #919191;
+        position: absolute;
+        overflow: visible;
+        right: 0%;
+        bottom: 0%;
+    }
+
+
+    .joy1IMG {
+        position: absolute;
+        top: 25%;
+        left: 25%;
+        padding: 0px;
+        margin: 0;
+        width: 50%;
+    }
+
+
+    #joy2 {
+        width: 20vw;
+        height: 20vw;
+        /*border: solid 1px black;*/
+        background-color: #919191;
+        position: absolute;
+        overflow: visible;
+        left: 0%;
+        bottom: 0%;
+    }
+
+    .joy2IMG {
+        position: absolute;
+        top: 37.5%;
+        left: 25%;
+        padding: 0px;
+        margin: 0;
+        width: 50%;
+    }
+
+    #armlift{
+        width: 10vw;
+        height: 20vw;
+        /*border: solid 1px black;*/
+        background-color: #00ffff20;
+        position: absolute;
+        overflow: visible;
+        left: 20%;
+        bottom: 0%;
+    }
+
+    #armopen{
+        width: 10vw;
+        height: 20vw;
+        /*border: solid 1px black;*/
+        background-color: #00ffff20;
+        position: absolute;
+        overflow: visible;
+        left: 30%;
+        bottom: 0%;
+    }
+
+    #armput{
+        width: 10vw;
+        height: 20vw;
+        /*border: solid 1px black;*/
+        background-color: #00ffff20;
+        position: absolute;
+        overflow: visible;
+        left: 40%;
+        bottom: 0%;
+    }
+
+    #armkeep{
+        width: 10vw;
+        height: 20vw;
+        /*border: solid 1px black;*/
+        background-color: #00ffff20;
+        position: absolute;
+        overflow: visible;
+        left: 50%;
+        bottom: 0%;
+    }
+
+    #subarmlift{
+        width: 10vw;
+        height: 20vw;
+        /*border: solid 1px black;*/
+        background-color: #00ffff20;
+        position: absolute;
+        overflow: visible;
+        left: 60%;
+        bottom: 0%;
+    }
+
+    #subarmopen{
+        width: 10vw;
+        height: 20vw;
+        /*border: solid 1px black;*/
+        background-color: #00ffff20;
+        position: absolute;
+        overflow: visible;
+        left: 70%;
+        bottom: 0%;
+    }
+
+    #map {
+        position: relative;
+        width: 1175px;
+        height: 800px;
+        top: 20px;
+        left: 5%;
+        bottom: 0%;
+    }
+
+    #r1 {
+        position: absolute;
+        width: 90px;
+        height: 90px;
+    }
+
+
+    #connection {
+        position: absolute;
+        width: 20vw;
+        height: 5vw;
+        right: calc(((100vw - 90vh)/2 - 20vw)/2);
+        top: 2%;
+        cursor: pointer;
+    }
+
+    #pos {
+        position: absolute;
+
+        width: 40vw;
+        height: calc(5vh - 6px);
+        top: 1px;
+        left: 30vw;
+        overflow-y: hidden;
+        border: 2px solid #0088ff;
+        background-color: #363636;
+        color: aliceblue;
+        text-align: center;
+        font-size: 3vh;
+    }
+
+    #mtd {
+        position: absolute;
+        /*
+        width: 40vw;
+        height: calc(5vh - 6px);
+        top: 30px;
+        left: 30vw;
+*/
+        width: 3vw;
+        height: 2.5vh;
+        bottom: 23vw;
+        left: calc((100vw - 90vh)/2 + 90vh + ((100vw - 90vh)/2 - 9.5vw)/3);
+
+        overflow-y: hidden;
+        border: 2px solid #0088ff;
+        background-color: #363636;
+        color: aliceblue;
+        text-align: center;
+        font-size: 2vh;
+    }
+
+    #show {
+        position: absolute;
+        width: 20vw;
+        height: 10vw;
+        top: 1vw;
+        left: 15vw;
+        overflow-y: auto;
+        border: 1px solid #333;
+        background-color: #ffffff;
+    }
+</style>
+</head>
+
+<body oncontextmenu="return false;">
+    <h1>Variable Display</h1>
+    
+    <div id="CTR_Area">
+        <div id="show"></div>
+        <div id="joy1">
+            <img src="img/joy1A.png" id="joy1A" class="joy1IMG">
+            <img src="img/joy2B.png" id="joy1B" class="joy1IMG" >
+        </div>
+
+        <div id="joy2">
+            <img src="img/joy2A.png" id="joy2A" class="joy2IMG"
+                style="position:absolute; width: 20vw;height: 20vw; top:0vw; left:0vw;cursor:pointer;">
+            <img src="img/joy2B.png" id="joy2B" class="joy2IMG"
+                style="position:absolute; width: 5vw;height: 5vw; top:0vw; left:9.1vw;cursor:pointer;">
+        </div>
+            
+        <div id="armlift">
+            <img src="img/liftUpDown.png" id="liftUpDown"
+                style="position:absolute; width: 10vw;height: 20vw; top:0vw; left:0vw;cursor:pointer;">
+            <img src="img/bar.png" id="barlift"
+                style="position:absolute; width: 6vw;height: 16vw; top:3vw; left:0.2vw;cursor:pointer;">
+            <img src="img/joy2B.png" id="knoblift"
+                style="position:absolute; width: 5vw;height: 5vw; top:8vw; left:0.8vw;cursor:pointer;">
+        </div>
+
+        <!--
+
+        <div id="armopen">
+            <img src="img/openclose.png" id="armopen"
+                style="position:absolute; width: 10vw;height: 20vw; top:0vw; left:0vw;cursor:pointer;">
+            <img src="img/bar.png" id="baropen"
+                style="position:absolute; width: 6vw;height: 16vw; top:3vw; left:0.2vw;cursor:pointer;">
+            <img src="img/joy2B.png" id="knobopen"
+                style="position:absolute; width: 5vw;height: 5vw; top:8vw; left:0.8vw;cursor:pointer;">
+        </div>
+
+        <div id="subarmlift">
+            <img src="img/subliftUpDown.png" id="subliftUpDown"
+                style="position:absolute; width: 10vw;height: 20vw; top:0vw; left:0vw;cursor:pointer;">
+            <img src="img/bar.png" id="subbarlift"
+                style="position:absolute; width: 6vw;height: 16vw; top:3vw; left:0.2vw;cursor:pointer;">
+            <img src="img/joy2B.png" id="subknoblift"
+                style="position:absolute; width: 5vw;height: 5vw; top:8vw; left:0.8vw;cursor:pointer;">
+        </div>
+
+        <div id="subarmopen">
+            <img src="img/subopenclose.png" id="subarmopen"
+                style="position:absolute; width: 10vw;height: 20vw; top:0vw; left:0vw;cursor:pointer;">
+            <img src="img/bar.png" id="subbaropen"
+                style="position:absolute; width: 6vw;height: 16vw; top:3vw; left:0.2vw;cursor:pointer;">
+            <img src="img/joy2B.png" id="subknobopen"
+                style="position:absolute; width: 5vw;height: 5vw; top:8vw; left:0.8vw;cursor:pointer;">
+        </div>
+
+        <div id="armput">
+            <img src="img/putget.png" id="armput"
+                style="position:absolute; width: 10vw;height: 20vw; top:0vw; left:0vw;cursor:pointer;">
+            <img src="img/bar.png" id="barput"
+                style="position:absolute; width: 6vw;height: 16vw; top:3vw; left:0.2vw;cursor:pointer;">
+            <img src="img/joy2B.png" id="knobput"
+                style="position:absolute; width: 5vw;height: 5vw; top:8vw; left:0.8vw;cursor:pointer;">
+        </div>
+
+        <div id="armkeep">
+            <img src="img/keep.png" id="armkeep"
+                style="position:absolute; width: 10vw;height: 20vw; top:0vw; left:0vw;cursor:pointer;">
+            <img src="img/bar.png" id="barkeep"
+                style="position:absolute; width: 6vw;height: 16vw; top:3vw; left:0.2vw;cursor:pointer;">
+            <img src="img/joy2B.png" id="knobkeep"
+                style="position:absolute; width: 5vw;height: 5vw; top:8vw; left:0.8vw;cursor:pointer;">
+        </div>
+
+        -->
+
+        <img onclick="doReload(1);" src="img/connecting.png" id="connection";visibility:visible>
+
+        <img src="img/spdUp.png" id="up" 
+            style="position:absolute; width: 4.8vw;height: 4.8vw; bottom:27.1vw; right:7.6vw;cursor:pointer;">
+        <img src="img/spdDw.png" id="down" 
+            style="position:absolute; width: 4.8vw;height: 4.8vw; bottom:22.1vw; right:7.6vw;cursor:pointer;">
+        <img src="img/left.png" id="left" 
+            style="position:absolute; width: 4.8vw;height: 4.8vw; bottom:22.1vw; right:12.6vw;cursor:pointer;">
+        <img src="img/right.png" id="right" 
+            style="position:absolute; width: 4.8vw;height: 4.8vw; bottom:22.1vw; right:2.6vw;cursor:pointer;">
+
+        <img src="img/put.png" id="put" class="manual_key"
+            style="position:absolute; width: 12vw;height: 12vw; bottom:22.1vw; left:2vw;cursor:pointer;">
+        <img src="img/get.png" id="get" class="manual_key"
+            style="position:absolute; width: 12vw;height: 12vw; bottom:22.1vw; left:16vw;cursor:pointer;">
+
+        
+
+        <img src="img/emergency.png" id="emergency"
+            style="position:absolute; width: 10vw;height: 10vw; top:1vw; left:2vw;cursor:pointer;">
+
+        <img src="img/emergency.png" id="emergency"
+            style="position:absolute; width: 10vw;height: 10vw; top:1vw; left:2vw;cursor:pointer;">
+
+        <div class="map">
+            <img src="img/field_detail.png"
+                style="position:absolute; top:30px; left:30px;cursor:pointer;">
+            <img src="img/r1.png" class="r1" id="r1"
+                style="position:absolute; top:200px; left:200px;cursor:pointer;">
+        </div>
+        
+
+    </div>
+<div id="message"></div>
+
+</body>
+
+<script defer>
+    const dup=document.getElementById('up');
+    const ddown=document.getElementById('down');
+    const dleft=document.getElementById('left');
+    const dright=document.getElementById('right');
+
+    const dget = document.getElementById('get');
+    const dput = document.getElementById('put');
+
+    const demergency = document.getElementById('emergency');
+
+    const messageDiv = document.getElementById('message');
+
+    var element = document.getElementById("CTR_Area");
+    element.onclick = function (e) {
+        // エレメントをフルスクリーン表示する
+        ElementRequestFullscreen(element);
+
+    };
+
+    var t1x0, t1y0;
+    var t1x = 0, t1y = 0;
+    var j1x = 0, j1y = 0;
+    var j1id;
+
+    var t2x0,t2y0;
+    var t2x = 0, t2y = 0;
+    var j2x = 0;
+    var j2id;
+    var theta = 0;
+
+    var t3y0;
+    var t3y = 0;
+    var j3y = 0;
+    var j3id;
+
+    var t4y0;
+    var t4y = 0;
+    var j4y = 0;
+    var j4id;
+
+    var t5y0;
+    var t5y = 0;
+    var j5y = 0;
+    var j5id;
+
+    var t6y0;
+    var t6y = 0;
+    var j6y = 0;
+    var j6id;
+
+    var t7y0;
+    var t7y = 0;
+    var j7y = 0;
+    var j7id;
+
+    var t8y0;
+    var t8y = 0;
+    var j8y = 0;
+    var j8id;
+
+    const djoy1 = document.getElementById("joy1");
+    const djoy1A = document.getElementById("joy1A");
+    const djoy1B = document.getElementById("joy1B");
+
+    const djoy2 = document.getElementById("joy2");
+    const djoy2A = document.getElementById("joy2A");
+    const djoy2B = document.getElementById("joy2B");
+
+    const darmlift = document.getElementById("armlift");
+    const dbarlift = document.getElementById("barlift");
+    const dknoblift = document.getElementById("knoblift");
+
+    const darmopen = document.getElementById("armopen");
+    const dbaropen = document.getElementById("baropen");
+    const dknobopen = document.getElementById("knobopen");
+
+    const darmput = document.getElementById("armput");
+    const dbarput = document.getElementById("barput");
+    const dknobput = document.getElementById("knobput");
+
+    const darmkeep = document.getElementById("armkeep");
+    const dbarkeep = document.getElementById("barkeep");
+    const dknobkeep = document.getElementById("knobkeep");
+
+    const dsubarmlift = document.getElementById("subarmlift");
+    const dsubbarlift = document.getElementById("subbarlift");
+    const dsubknoblift = document.getElementById("subknoblift");
+
+    const dsubarmopen = document.getElementById("subarmopen");
+    const dsubbaropen = document.getElementById("subbaropen");
+    const dsubknobopen = document.getElementById("subknobopen");
+
+    theta = -1*Math.PI/2;
+    djoy2B.style.left = djoy2A.clientWidth * 0.5 + (djoy2A.clientWidth / 2 -djoy2B.clientWidth / 2) * Math.cos(theta)- djoy2B.clientWidth / 2;
+    djoy2B.style.top  = djoy2A.clientHeight * 0.5 + (djoy2A.clientWidth / 2 -djoy2B.clientWidth / 2) * Math.sin(theta)- djoy2B.clientHeight / 2;
+    j2x = theta;
+
+    var btn_array = [];
+
+    for (var i = 0; i < 12; i++) {
+            btn_array[i] = 0;
+    }
+    
+    var res_arr;
+
+    const url = new URL(document.location);
+    var addrIP = url.hostname//"127.0.0.1";
+    var addrPort = 50001;
+    var addr = 'ws://' + addrIP + ':' + addrPort + '/';
+
+    var wSck = new WebSocket(addr);// WebSocketオブジェクト生成;
+    addWSevent();
+    setInterval("sendT()", 10);
+    setInterval("SWconnect()", 100);
+    
+
+    function SWconnect() {
+        if (wSck.readyState == 3) {
+            //wSck.close();
+            wSck = new WebSocket(addr);// WebSocketオブジェクト生成?
+            addWSevent();
+        }
+    }
+
+    function addWSevent() {
+        wSck.onopen = function () {//ソケット接続時のアクション
+            setConnectionInfo();
+        };
+
+        wSck.onclose = function (e) {
+            wSck.close();
+            setConnectionInfo();
+        };
+
+        wSck.onerror = function (e) {
+            wSck.close();
+            setConnectionInfo();
+        };
+
+        wSck.onmessage = function (e) {//メ??セージを受け取ったとき???アクション
+            setConnectionInfo();
+            consoleAdd(e.data);
+        };
+    }
+
+    function consoleAdd(a) {
+        //document.getElementById('show').innerHTML = a + "<br>" + document.getElementById('show').innerHTML;
+        removeAllBalls()
+        if(a.substr(0,5) == "#data"){
+            var b = a.split(" ");
+            for(var i = 1 ; i < b.length ; i++){
+                c = b[i].split("_")
+                for(var j = 1 ; j < c.length ; j++){
+                    d = c[j].replace(/[()\s]+/g,'').split(',');
+                    if(c[0] == "redball" || c[0] == "purpleball" || c[0] == "blueball"){
+                        displayBalls(c[0],d[0],d[1],j);
+                    }
+                    if(c[0] == "r1"){
+                        document.getElementById("r1").style.left = d[0] + "px";
+                        document.getElementById("r1").style.top = d[0] + "py";
+                    }
+                }
+                //document.getElementById('show').innerHTML = res_arr[i] + "<br>" + document.getElementById('show').innerHTML;
+            }
+            
+        }else{
+            //document.getElementById('show').innerHTML = a + "<br>" + document.getElementById('show').innerHTML;
+        }
+    }
+
+    function sendT() {
+        if (wSck.readyState == 1) {
+            sendMsg = '';
+            sendMsg += j1x.toPrecision(4) + " ";
+            sendMsg += j1y.toPrecision(4) + " ";
+            sendMsg += j2x.toPrecision(4) + " ";
+
+            sendMsg += btn_array[0] + " ";
+            sendMsg += btn_array[1] + " ";
+            sendMsg += btn_array[2] + " ";
+            sendMsg += btn_array[3] + " ";
+            sendMsg += btn_array[4] + " ";
+            sendMsg += btn_array[5] + " ";
+            sendMsg += btn_array[6] + " ";
+            sendMsg += btn_array[7] + " ";
+            sendMsg += j3y.toPrecision(4) + " ";
+            sendMsg += j4y.toPrecision(4) + " ";
+            sendMsg += j5y.toPrecision(4) + " ";
+            sendMsg += j6y.toPrecision(4) + " ";
+            sendMsg += j7y.toPrecision(4) + " ";
+            sendMsg += j8y.toPrecision(4) + " ";
+
+            sendMsg += 0 + " ";
+            sendMsg += 1 + " ";
+
+            
+            wSck.send(sendMsg);
+        }
+    }
+
+    function setConnectionInfo() {
+        if (wSck.readyState == 1) {
+            document.getElementById("connection").src = "img/connected.png";
+        } else {
+            document.getElementById("connection").src = "img/connecting.png";
+        }
+    }
+    
+    function doReload(a) {
+        if (a != 0) {
+            sendT();
+            window.location.reload();
+        }
+    }
+
+    // ボール要素を格納する配列
+    var balls = [];
+
+    // ボールを表示する関数
+    function displayBalls(type,x,y,i) {
+        var mapElement = document.querySelector('.map'); // mapクラスを持つ要素を取得
+        // img要素を作成
+        var ball = document.createElement("img");
+        // 画像のパスを指定
+        ball.src = "img/"+type+".png";
+        // idを設定
+        ball.id = type + i;
+        // スタイルを設定
+        ball.style.position = "absolute";
+        ball.style.width = "40px"; // ボールの幅
+        ball.style.height = "40px"; // ボールの高さ
+        ball.style.left = x + "px"; // 画面内のランダムな位置に配置
+        ball.style.top = y + "px"; // 画面内のランダムな位置に配置
+
+        // ボール要素を配列に追加
+        balls.push(ball);
+
+        // map要素に追加
+        mapElement.appendChild(ball);
+    }
+
+    // ボールをすべて削除する関数
+    function removeAllBalls() {
+        var mapElement = document.querySelector('.map'); // mapクラスを持つ要素を取得
+
+        // 配列に格納されているすべてのボール要素を削除
+        balls.forEach(function(ball) {
+            mapElement.removeChild(ball); // ボール要素を削除
+        });
+
+        // 配列を空にする
+        balls = [];
+    }
+
+    demergency.addEventListener('touchstart', () => {
+        event.preventDefault();
+        btn_array[1]=1;
+    });
+    
+    demergency.addEventListener('touchend', () => {
+        event.preventDefault();
+        btn_array[1]=0;
+    });
+
+    dup.addEventListener('touchstart', () => {
+        event.preventDefault();
+        btn_array[2]=1;
+    });
+    
+    dup.addEventListener('touchend', () => {
+        event.preventDefault();
+        btn_array[2]=0;
+    });
+
+    ddown.addEventListener('touchstart', () => {
+        event.preventDefault();
+        btn_array[3]=1;
+    });
+    
+    ddown.addEventListener('touchend', () => {
+        event.preventDefault();
+        btn_array[3]=0;
+    });
+
+    dleft.addEventListener('touchstart', () => {
+        event.preventDefault();
+        btn_array[4]=1;
+    });
+    
+    dleft.addEventListener('touchend', () => {
+        event.preventDefault();
+        btn_array[4]=0;
+    });
+
+    dright.addEventListener('touchstart', () => {
+        event.preventDefault();
+        btn_array[5]=1;
+    });
+    
+    dright.addEventListener('touchend', () => {
+        event.preventDefault();
+        btn_array[5]=0;
+    });
+
+    dget.addEventListener('touchstart', () => {
+        event.preventDefault();
+        btn_array[6]=1;
+    });
+    
+    dget.addEventListener('touchend', () => {
+        event.preventDefault();
+        btn_array[6]=0;
+    });
+
+    dput.addEventListener('touchstart', () => {
+        event.preventDefault();
+        btn_array[7]=1;
+    });
+    
+    dput.addEventListener('touchend', () => {
+        event.preventDefault();
+        btn_array[7]=0;
+    });
+
+    
+    // touchstartイベン??
+    djoy1.addEventListener("touchstart", function (e) {
+        j1id = 0;
+        var i = 0;
+        for (const touch of e.touches) {
+            if (touch.target.id == djoy1.id || touch.target.id == djoy1A.id || touch.target.id == djoy1B.id) {
+                j1id = i;
+                break;
+            }
+            i++;
+        }
+        t1x0 = e.touches[j1id].pageX;
+        t1y0 = e.touches[j1id].pageY;
+        t1x = 0;
+        t1y = 0;
+        moveJoy1();
+    })
+
+    // touchmoveイベン??
+    djoy1.addEventListener("touchmove", function (e) {
+        event.preventDefault();  // 画面スクロールを防止
+        j1id = 0;
+        var i = 0;
+        for (const touch of e.touches) {
+            if (touch.target.id == djoy1.id || touch.target.id == djoy1A.id || touch.target.id == djoy1B.id) {
+                j1id = i;
+                break;
+            }
+            i++;
+        }
+        t1x = e.touches[j1id].pageX - t1x0;
+        t1y = e.touches[j1id].pageY - t1y0;
+
+        if(j6y<0)
+        {
+            if(Math.abs(t1x)>Math.abs(t1y)) t1y=0;
+            else t1x=0;
+        }
+
+        if (t1x ** 2 + t1y ** 2 > (djoy1A.clientWidth / 2) ** 2) {
+            var ratio = (djoy1A.clientWidth / 2) / Math.sqrt(t1x ** 2 + t1y ** 2);
+            t1x *= ratio;
+            t1y *= ratio;
+        }
+
+        moveJoy1();
+    })
+
+    // touchendイベン??
+    djoy1.addEventListener("touchend", function (e) {
+        t1x = 0;
+        t1y = 0;
+        t1x0 = djoy1.clientWidth * 0.5 + djoy1.getBoundingClientRect().left;
+        t1y0 = djoy1.clientHeight * 0.5 + djoy1.getBoundingClientRect().top;
+
+        moveJoy1();
+    })
+
+
+    // touchcancelイベン??
+    djoy1.addEventListener("touchcancel", function (e) {
+        t1x = 0;
+        t1y = 0;
+        t1x0 = djoy1.clientWidth * 0.25;
+        t1y0 = djoy1.clientHeight * 0.25;
+        moveJoy1();
+    })
+
+    function moveJoy1() {
+        djoy1A.style.left = djoy1.clientWidth * 0.25 + t1x0 - djoy1.getBoundingClientRect().left - djoy1.clientWidth / 2;
+        djoy1A.style.top = djoy1.clientHeight * 0.25 + t1y0 - djoy1.getBoundingClientRect().top - djoy1.clientHeight / 2;
+        djoy1B.style.left = djoy1.clientWidth * 0.25 + t1x0 - djoy1.getBoundingClientRect().left - djoy1.clientWidth / 2 + t1x;
+        djoy1B.style.top = djoy1.clientHeight * 0.25 + t1y0 - djoy1.getBoundingClientRect().top - djoy1.clientHeight / 2 + t1y;
+
+        j1x = t1x / (djoy1A.clientWidth / 2);
+        j1y = t1y / (djoy1A.clientHeight / 2);
+    }
+
+
+    //******************joy2
+
+    // touchstartイベン??
+    djoy2.addEventListener("touchstart", function (e) {
+        event.preventDefault();  // 画面スクロールを防止
+        j2id = 0;
+        var i = 0;
+        for (const touch of e.touches) {
+            if (touch.target.id == djoy2.id || touch.target.id == djoy2A.id || touch.target.id == djoy2B.id) {
+                j2id = i;
+                break;
+            }
+            i++;
+        }
+        t2x0 = document.body.clientWidth/10;
+        t2y0 = document.body.clientHeight-document.body.clientHeight/10;
+        t2x = e.touches[j2id].pageX - t2x0;
+        t2y = e.touches[j2id].pageY - t2y0;
+
+        moveJoy2();
+    })
+
+
+    // touchmoveイベント
+    djoy2.addEventListener("touchmove", function (e) {
+        event.preventDefault();  // 画面スクロールを防止
+
+        j2id = 0;
+        var i = 0;
+        for (const touch of e.touches) {
+            if (touch.target.id == djoy2.id || touch.target.id == djoy2A.id || touch.target.id == djoy2B.id) {
+                j2id = i;
+                break;
+            }
+            i++;
+        }
+
+        t2x = e.touches[j2id].pageX - t2x0;
+        t2y = e.touches[j2id].pageY - t2y0;
+        
+        moveJoy2();
+    })
+
+    // touchendイベン??
+    djoy2.addEventListener("touchend", function (e) {
+        if(theta>=-1*Math.PI/4 && theta<=Math.PI/4) theta=0;
+        else if(theta>=-3*Math.PI/4 && theta<=-1*Math.PI/4) theta=-1*Math.PI/2;
+        else if(theta>=Math.PI/4 && theta<=3*Math.PI/4) theta =Math.PI/2;
+        else theta =Math.PI;
+        
+        t2x=Math.cos(theta);
+        t2y=Math.sin(theta);
+
+        moveJoy2();
+    })
+
+    // touchcancelイベン??
+    djoy2.addEventListener("touchcancel", function (e) {
+        if(theta>=-1*Math.PI/4 && theta<=Math.PI/4) theta=0;
+        else if(theta>=-3*Math.PI/4 && theta<=-1*Math.PI/4) theta=-1*Math.PI/2;
+        else if(theta>=Math.PI/4 && theta<=3*Math.PI/4) theta =Math.PI/2;
+        else theta =Math.PI;
+
+        t2x=Math.cos(theta);
+        t2y=Math.sin(theta);
+
+        moveJoy2();
+    })
+
+    function moveJoy2() {
+        theta = Math.atan2(t2y,t2x);
+        djoy2B.style.left = djoy2A.clientWidth * 0.5 + (djoy2A.clientWidth / 2 -djoy2B.clientWidth / 2) * Math.cos(theta)- djoy2B.clientWidth / 2;
+        djoy2B.style.top  = djoy2A.clientHeight * 0.5 + (djoy2A.clientWidth / 2 -djoy2B.clientWidth / 2) * Math.sin(theta)- djoy2B.clientHeight / 2;
+
+        j2x = theta+Math.PI/2;
+    }
+
+    //******************joy3
+
+    // touchstartイベン??
+    darmlift.addEventListener("touchstart", function (e) {
+        event.preventDefault();  // 画面スクロールを防止
+        j3id = 0;
+        var i = 0;
+        for (const touch of e.touches) {
+            
+            if (touch.target.id == darmlift.id || touch.target.id == dknoblift.id || touch.target.id == dbarlift.id) {
+                j3id = i;
+                break;
+            }
+            i++;
+        }
+        
+        t3y0 = dbarlift.getBoundingClientRect().top+dbarlift.clientHeight/2;
+        t3y = e.touches[j3id].pageY - t3y0;
+
+        //document.getElementById('show').innerHTML = dknoblift.getBoundingClientRect().bottom;
+        moveJoy3();
+    });
+
+
+    // touchmoveイベント
+    darmlift.addEventListener("touchmove", function (e) {
+        event.preventDefault();  // 画面スクロールを防止
+        j3id = 0;
+        var i = 0;
+        for (const touch of e.touches) {
+            if (touch.target.id == darmlift.id || touch.target.id == dknoblift.id || touch.target.id == dbarlift.id) {
+                j3id = i;
+                break;
+            }
+            i++;
+        }
+
+        t3y = e.touches[j3id].pageY - t3y0;
+        
+        moveJoy3();
+    })
+
+    // touchendイベン??
+    darmlift.addEventListener("touchend", function (e) {
+        t3y=0;
+        
+        moveJoy3();
+    })
+
+    // touchcancelイベン??
+    darmlift.addEventListener("touchcancel", function (e) {
+        t3y=0;
+
+        moveJoy3();
+    })
+
+    function moveJoy3() {
+        
+        if(t3y>0) t3y=Math.min(t3y,dbarlift.clientHeight/2-dknoblift.clientHeight/2);
+        else t3y=Math.max(t3y,-1*dbarlift.clientHeight/2+dknoblift.clientHeight/2);
+
+        dknoblift.style.top=dbarlift.clientHeight/2+t3y+4;
+
+        j3y = -1*t3y/(dbarlift.clientHeight-dknoblift.clientHeight)*2;
+        //document.getElementById('show').innerHTML = -1*j3y;
+    }
+
+    //******************joy4
+
+    // touchstartイベン??
+    darmopen.addEventListener("touchstart", function (e) {
+        event.preventDefault();  // 画面スクロールを防止
+        j4id = 0;
+        var i = 0;
+        for (const touch of e.touches) {
+            
+            if (touch.target.id == darmopen.id || touch.target.id == dknobopen.id || touch.target.id == dbaropen.id) {
+                j4id = i;
+                break;
+            }
+            i++;
+        }
+        
+        t4y0 = dbaropen.getBoundingClientRect().top+dbaropen.clientHeight/2;
+        t4y = e.touches[j4id].pageY - t4y0;
+
+        //document.getElementById('show').innerHTML = dknoblift.getBoundingClientRect().bottom;
+        moveJoy4();
+    });
+
+
+    // touchmoveイベント
+    darmopen.addEventListener("touchmove", function (e) {
+        event.preventDefault();  // 画面スクロールを防止
+        j4id = 0;
+        var i = 0;
+        for (const touch of e.touches) {
+            if (touch.target.id == darmopen.id || touch.target.id == dknobopen.id || touch.target.id == dbaropen.id) {
+                j4id = i;
+                break;
+            }
+            i++;
+        }
+
+        t4y = e.touches[j4id].pageY - t4y0;
+        
+        moveJoy4();
+    })
+
+    // touchendイベン??
+    darmopen.addEventListener("touchend", function (e) {
+        t4y=0;
+        
+        moveJoy4();
+    })
+
+    // touchcancelイベン??
+    darmopen.addEventListener("touchcancel", function (e) {
+        t4y=0;
+
+        moveJoy4();
+    })
+
+    function moveJoy4() {
+        
+        if(t4y>0) t4y=Math.min(t4y,dbaropen.clientHeight/2-dknobopen.clientHeight/2);
+        else t4y=Math.max(t4y,-1*dbaropen.clientHeight/2+dknobopen.clientHeight/2);
+
+        dknobopen.style.top=dbaropen.clientHeight/2+t4y+4;
+
+        j4y = -1*t4y/(dbaropen.clientHeight-dknobopen.clientHeight)*2;
+        document.getElementById('show').innerHTML = -1*j4y;
+    }
+
+
+    // ------------------------------------------------------------
+    // エレメントをフルスクリーン表示する関数
+    // ------------------------------------------------------------
+    function ElementRequestFullscreen(element) {
+        var list = [
+            "requestFullscreen",
+            "webkitRequestFullScreen",
+            "mozRequestFullScreen",
+            "msRequestFullscreen"
+        ];
+        var i;
+        var num = list.length;
+        for (i = 0; i < num; i++) {
+            if (element[list[i]]) {
+                element[list[i]]();
+                return true;
+            }
+        }
+        return false;
+    }
+
+    </script>
+</html>
